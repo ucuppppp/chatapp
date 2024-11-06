@@ -6,6 +6,7 @@ import {
 } from "firebase/auth";
 import {doc, setDoc} from "firebase/firestore";
 import {auth, db} from "./init";
+import { getUserData } from "./firestore";
 // Tipe untuk data pengguna
 interface UserData {
   email: string;
@@ -56,6 +57,8 @@ const loginUser = async (
       email,
       password
     );
+    document.cookie = `user=${await getUserData(userCredential.user.uid)}`
+    document.cookie = `token=${await userCredential.user.getIdToken()}`
     return {message: "Login berhasil", user: userCredential};
   } catch (error) {
     return {error: (error as Error).message || "Terjadi kesalahan saat login"};

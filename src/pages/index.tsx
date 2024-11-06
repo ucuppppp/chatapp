@@ -1,5 +1,24 @@
 import Image from "next/image";
 import localFont from "next/font/local";
+import Sidebar from "@/components/ui/sidebar";
+import {Avatar, AvatarImage} from "@/components/ui/avatar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  BookmarkIcon,
+  ChatBubbleIcon,
+  DotsHorizontalIcon,
+  DotsVerticalIcon,
+  HeartIcon,
+  PaperPlaneIcon,
+} from "@radix-ui/react-icons";
+import {Button} from "@/components/ui/button";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -14,102 +33,262 @@ const geistMono = localFont({
 
 export default function Home() {
   return (
-    <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
-    >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/pages/index.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <>
+      <main className="flex flex-row">
+        <Sidebar />
+        <div className="w-full h-auto flex flex-col">
+          <div className="main flex w-3/4 flex-col mx-7 px-4 justify-center items-center">
+            <div className="statuses w-full p-4 flex justify-center gap-4">
+              <div className="status flex flex-col items-center gap-1">
+                <Avatar className="h-20 w-20 border-2 border-blue-700">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                </Avatar>
+                <span className="username">username</span>
+              </div>
+              <div className="status flex flex-col items-center gap-1">
+                <Avatar className="h-20 w-20 border-2 border-blue-700">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                </Avatar>
+                <span className="username">username</span>
+              </div>
+              <div className="status flex flex-col items-center gap-1">
+                <Avatar className="h-20 w-20 border-2 border-blue-700">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                </Avatar>
+                <span className="username">username</span>
+              </div>
+              <div className="status flex flex-col items-center gap-1">
+                <Avatar className="h-20 w-20 border border-blue-700">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                </Avatar>
+                <span className="username">username</span>
+              </div>
+              <div className="status flex flex-col items-center gap-1">
+                <Avatar className="h-20 w-20 border border-blue-700">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                </Avatar>
+                <span className="username">username</span>
+              </div>
+              <div className="status flex flex-col items-center gap-1">
+                <Avatar className="h-20 w-20 border border-blue-700">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                </Avatar>
+                <span className="username">username</span>
+              </div>
+              <div className="status flex flex-col items-center gap-1">
+                <Avatar className="h-20 w-20 border border-blue-700">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                </Avatar>
+                <span className="username">username</span>
+              </div>
+              <div className="status flex flex-col items-center gap-1">
+                <Avatar className="h-20 w-20 border border-blue-700">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                </Avatar>
+                <span className="username">username</span>
+              </div>
+            </div>
+            <div className="posts w-5/6 h-full p-4 flex flex-col items-center gap-4 ">
+              <Card className="w-2/3 h-auto p-4 dark">
+                <CardHeader className="flex flex-row items-center">
+                  <Avatar className="flex">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                  </Avatar>
+                  <CardTitle className="flex-1 pl-3">_cristiano7</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Button className="text-sm">Follow</Button>
+                    <DotsVerticalIcon className="h-6 w-6" color="white" />
+                  </div>
+                </CardHeader>
+                <CardContent className="w-full h-[700px] flex flex-col">
+                  <div className="rounded-lg overflow-hidden w-full">
+                    <img
+                      src="https://img.a.transfermarkt.technology/portrait/big/8198-1694609670.jpg?lm=1"
+                      alt=""
+                      className="object-cover h-full w-full"
+                    />
+                  </div>
+                  <div className="interaction flex items-center justify-between pt-4">
+                    <div className="share like flex items-center gap-2">
+                      <div className="like flex items-center gap-1">
+                        <HeartIcon className="h-9 w-9" />
+                        <span className="likecount text-lg">10</span>
+                      </div>
+                      <div className="comment flex items-center gap-1">
+                        <ChatBubbleIcon className="h-9 w-9" />
+                        <span className="commentcount text-lg">10</span>
+                      </div>
+                      <div className="share flex items-center gap-1">
+                        <PaperPlaneIcon className="h-9 w-9" />
+                        <span className="sharecount text-lg">10</span>
+                      </div>
+                    </div>
+                    <div className="bookmark flex items-center">
+                      <BookmarkIcon className="h-9 w-9" />
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex flex-row items-center h-auto pb-4">
+                  <CardDescription className="flex text-lg text-white">
+                    description Lorem ipsum dolor sit, amet consectetur
+                    adipisicing elit. Adipisci reprehenderit asperiores, dolorem
+                    facilis dignissimos enim. Sed a impedit animi velit! Qui
+                    vitae tempore ex est beatae doloremque accusantium animi,
+                    ipsam facilis tens.
+                  </CardDescription>
+                </CardFooter>
+              </Card>
+              <Card className="w-2/3 h-auto p-4 dark">
+                <CardHeader className="flex flex-row items-center">
+                  <Avatar className="flex">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                  </Avatar>
+                  <CardTitle className="flex-1 pl-3">_cristiano7</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Button className="text-sm">Follow</Button>
+                    <DotsVerticalIcon className="h-6 w-6" color="white" />
+                  </div>
+                </CardHeader>
+                <CardContent className="w-full h-[700px] flex flex-col">
+                  <div className="rounded-lg overflow-hidden w-full">
+                    <img
+                      src="https://img.a.transfermarkt.technology/portrait/big/8198-1694609670.jpg?lm=1"
+                      alt=""
+                      className="object-cover h-full w-full"
+                    />
+                  </div>
+                  <div className="interaction flex items-center justify-between pt-4">
+                    <div className="share like flex items-center gap-2">
+                      <div className="like flex items-center gap-1">
+                        <HeartIcon className="h-9 w-9" />
+                        <span className="likecount text-lg">10</span>
+                      </div>
+                      <div className="comment flex items-center gap-1">
+                        <ChatBubbleIcon className="h-9 w-9" />
+                        <span className="commentcount text-lg">10</span>
+                      </div>
+                      <div className="share flex items-center gap-1">
+                        <PaperPlaneIcon className="h-9 w-9" />
+                        <span className="sharecount text-lg">10</span>
+                      </div>
+                    </div>
+                    <div className="bookmark flex items-center">
+                      <BookmarkIcon className="h-9 w-9" />
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex flex-row items-center h-auto pb-4">
+                  <CardDescription className="flex text-lg text-white">
+                    description Lorem ipsum dolor sit, amet consectetur
+                    adipisicing elit. Adipisci reprehenderit asperiores, dolorem
+                    facilis dignissimos enim. Sed a impedit animi velit! Qui
+                    vitae tempore ex est beatae doloremque accusantium animi,
+                    ipsam facilis tens.
+                  </CardDescription>
+                </CardFooter>
+              </Card>
+              <Card className="w-2/3 h-auto p-4 dark">
+                <CardHeader className="flex flex-row items-center">
+                  <Avatar className="flex">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                  </Avatar>
+                  <CardTitle className="flex-1 pl-3">_cristiano7</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Button className="text-sm">Follow</Button>
+                    <DotsVerticalIcon className="h-6 w-6" color="white" />
+                  </div>
+                </CardHeader>
+                <CardContent className="w-full h-[700px] flex flex-col">
+                  <div className="rounded-lg overflow-hidden w-full">
+                    <img
+                      src="https://img.a.transfermarkt.technology/portrait/big/8198-1694609670.jpg?lm=1"
+                      alt=""
+                      className="object-cover h-full w-full"
+                    />
+                  </div>
+                  <div className="interaction flex items-center justify-between pt-4">
+                    <div className="share like flex items-center gap-2">
+                      <div className="like flex items-center gap-1">
+                        <HeartIcon className="h-9 w-9" />
+                        <span className="likecount text-lg">10</span>
+                      </div>
+                      <div className="comment flex items-center gap-1">
+                        <ChatBubbleIcon className="h-9 w-9" />
+                        <span className="commentcount text-lg">10</span>
+                      </div>
+                      <div className="share flex items-center gap-1">
+                        <PaperPlaneIcon className="h-9 w-9" />
+                        <span className="sharecount text-lg">10</span>
+                      </div>
+                    </div>
+                    <div className="bookmark flex items-center">
+                      <BookmarkIcon className="h-9 w-9" />
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex flex-row items-center h-auto pb-4">
+                  <CardDescription className="flex text-lg text-white">
+                    description Lorem ipsum dolor sit, amet consectetur
+                    adipisicing elit. Adipisci reprehenderit asperiores, dolorem
+                    facilis dignissimos enim. Sed a impedit animi velit! Qui
+                    vitae tempore ex est beatae doloremque accusantium animi,
+                    ipsam facilis tens.
+                  </CardDescription>
+                </CardFooter>
+              </Card>
+              <Card className="w-2/3 h-auto p-4 dark">
+                <CardHeader className="flex flex-row items-center">
+                  <Avatar className="flex">
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                  </Avatar>
+                  <CardTitle className="flex-1 pl-3">_cristiano7</CardTitle>
+                  <div className="flex items-center gap-2">
+                    <Button className="text-sm">Follow</Button>
+                    <DotsVerticalIcon className="h-6 w-6" color="white" />
+                  </div>
+                </CardHeader>
+                <CardContent className="w-full h-[700px] flex flex-col">
+                  <div className="rounded-lg overflow-hidden w-full">
+                    <img
+                      src="https://img.a.transfermarkt.technology/portrait/big/8198-1694609670.jpg?lm=1"
+                      alt=""
+                      className="object-cover h-full w-full"
+                    />
+                  </div>
+                  <div className="interaction flex items-center justify-between pt-4">
+                    <div className="share like flex items-center gap-2">
+                      <div className="like flex items-center gap-1">
+                        <HeartIcon className="h-9 w-9" />
+                        <span className="likecount text-lg">10</span>
+                      </div>
+                      <div className="comment flex items-center gap-1">
+                        <ChatBubbleIcon className="h-9 w-9" />
+                        <span className="commentcount text-lg">10</span>
+                      </div>
+                      <div className="share flex items-center gap-1">
+                        <PaperPlaneIcon className="h-9 w-9" />
+                        <span className="sharecount text-lg">10</span>
+                      </div>
+                    </div>
+                    <div className="bookmark flex items-center">
+                      <BookmarkIcon className="h-9 w-9" />
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex flex-row items-center h-auto pb-4">
+                  <CardDescription className="flex text-lg text-white">
+                    description Lorem ipsum dolor sit, amet consectetur
+                    adipisicing elit. Adipisci reprehenderit asperiores, dolorem
+                    facilis dignissimos enim. Sed a impedit animi velit! Qui
+                    vitae tempore ex est beatae doloremque accusantium animi,
+                    ipsam facilis tens.
+                  </CardDescription>
+                </CardFooter>
+              </Card>
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+    </>
   );
 }

@@ -21,8 +21,7 @@ const getUserData = async (uid: string) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log("Data pengguna: ", docSnap.data());
-      return docSnap.data();
+      return JSON.stringify(docSnap.data());
     } else {
       console.log("Dokumen tidak ditemukan.");
       return null;
