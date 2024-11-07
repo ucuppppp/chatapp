@@ -4,14 +4,16 @@ import {
   signInWithEmailAndPassword,
   UserCredential,
 } from "firebase/auth";
-import {doc, setDoc} from "firebase/firestore";
+import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {auth, db} from "./init";
 import { getUserData } from "./firestore";
+import { set } from "react-hook-form";
 // Tipe untuk data pengguna
 interface UserData {
   email: string;
   username: string;
   createdAt: Date;
+  token: string;
 }
 
 // Fungsi untuk mendaftar pengguna
@@ -33,6 +35,7 @@ const registerUser = async (
       email,
       username,
       createdAt: new Date(),
+      token: await userCredential.user.getIdToken(),
     };
 
     await setDoc(doc(db, "users", uid), userData);
@@ -57,8 +60,14 @@ const loginUser = async (
       email,
       password
     );
-    document.cookie = `user=${await getUserData(userCredential.user.uid)}`
-    document.cookie = `token=${await userCredential.user.getIdToken()}`
+
+    const docRef = doc(db, "users", userCredential.user.uid);
+
+    await updateDoc(docRef, {token : await userCredential.user.getIdToken()});
+    const user = await getDoc(docRef);
+
+    document.cookie = `currentUser=${JSON.stringify(user.data())}`;
+    document.cookie = `token=${user.data()?.token}`
     return {message: "Login berhasil", user: userCredential};
   } catch (error) {
     return {error: (error as Error).message || "Terjadi kesalahan saat login"};

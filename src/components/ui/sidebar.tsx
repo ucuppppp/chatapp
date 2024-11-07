@@ -1,63 +1,85 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { BellIcon, GearIcon, HomeIcon, MagnifyingGlassIcon, PersonIcon, PlusCircledIcon } from "@radix-ui/react-icons";
-import { Avatar, AvatarImage } from "./avatar";
+import { Bookmark, Camera, Heart, Home, MessageCircle, PlusSquare, Search, Settings, User } from "lucide-react";
+import { Button } from "./button";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+
 
 export default function Sidebar() {
   return (
     <>
-      <div className="w-1/5 p-4 h-screen border-r border-gray-700 flex flex-col justify-between sticky top-0">
-      <div className="divide-y divide-gray-700">
-        <div className="header p-10">
-          <h1 className="text-xl text-center font-bold">SOCIALMEDIA</h1>
+      {/* Sidebar */}
+      <aside className="text-black flex-1 fixed left-0 top-0 z-40 hidden h-screen flex-col border-r bg-white p-5 min-w-20 sm:flex xl:flex xl:w-64">
+        <div className="mb-10 text-2xl font-bold hidden xl:block">
+          SocialApp
         </div>
-        <div className="flex flex-col gap-10 pt-10">
-          <h1 className="flex items-center gap-5 text-xl pl-3 cursor-pointer select-none font-bold">
-            <HomeIcon className={"h-7 w-7 item"} />
-            Beranda
-          </h1>
-          <h1 className="flex items-center gap-5 text-xl pl-3 cursor-pointer select-none">
-            <MagnifyingGlassIcon className={"h-7 w-7 item"} />
-            Cari
-          </h1>
-          <h1 className="flex items-center gap-5 text-xl pl-3 cursor-pointer select-none">
-            <PlusCircledIcon className={"h-7 w-7 item"} />
-            Posting
-          </h1>
-          <h1 className="flex items-center gap-5 text-xl pl-3 cursor-pointer select-none">
-            <BellIcon className={"h-7 w-7 item"} />
-            Notifikasi
-          </h1>
+        <div className="mb-10 text-2xl font-bold xl:hidden flex justify-center items-center">
+          <Camera />
         </div>
-      </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger className="w-full flex items-center justify-between pl-3 p-2 hover:bg-gray-900 rounded-lg">
-            <div className="flex items-center gap-3">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-              </Avatar>
-              <span className="select-none">Ucupp</span>
-            </div>
-            <span className="pr-3 text-gray-600 select-none">∧</span>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="dark w-56 h-56 bg-gray-800">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-gray-700" />
-            <DropdownMenuItem className="cursor-pointer text-sm">
-              <PersonIcon /> Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
-              <GearIcon /> Settings
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+        <nav className="flex flex-1 gap-4 flex-col items-center text-2xl space-y-2 xl:items-start xl:gap-3">
+          <Button
+            variant="ghost"
+            className="w-full lex gap-3 justify-start !text-lg"
+          >
+            <Home className="!w-7 !h-7" />
+            <p className="hidden xl:block">Beranda</p>
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full flex gap-3 justify-start !text-lg"
+          >
+            <Search className="!w-7 !h-7" />
+            <p className="hidden xl:block">Cari</p>
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full flex gap-3 justify-start !text-lg"
+          >
+            <PlusSquare className="!w-7 !h-7" />
+            <p className="hidden xl:block">Buat</p>
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full flex gap-3 justify-start !text-lg"
+          >
+            <Heart className="!w-7 !h-7" />
+            <p className="hidden xl:block">Notifikasi</p>
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full flex gap-3 justify-start !text-lg"
+          >
+            <MessageCircle className="!w-7 !h-7" />
+            <p className="hidden xl:block">Pesan</p>
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full flex gap-3 justify-start !text-lg"
+          >
+            <Bookmark className="!w-7 !h-7" />
+            <p className="hidden xl:block">Koleksi</p>
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full flex gap-3 justify-start !text-lg"
+          >
+            <Avatar className="w-8 h-8 xl:w-7 xl:h-7">
+              <AvatarImage
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb-NGEQDekk2BwsllLjk4tcIM_BPIzXECdsg&s"
+                alt="@johndoe"
+              />
+              <AvatarFallback>JD</AvatarFallback>
+            </Avatar>
+            <p className="hidden xl:block">Profil</p>
+          </Button>
+          {/* Button components omitted for brevity */}
+        </nav>
+        <Button
+          variant="ghost"
+          className="w-full flex gap-3 justify-start !text-lg"
+        >
+          <Settings className="!w-7 !h-7" />
+          <p className="hidden xl:block">Pengaturan</p>
+        </Button>
+      </aside>
     </>
   );
 }

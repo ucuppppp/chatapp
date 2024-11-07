@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { use, useEffect } from 'react'
 import { Bell, Bookmark, Camera, Heart, Home, LogOut, MessageCircle, PlusSquare, Search, Settings, TvIcon, User } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
+import { useRouter } from 'next/router'
+import withAuth from '@/lib/withAuth'
+import Sidebar from '@/components/ui/sidebar'
+import MobileNav from '@/components/ui/mobileNav'
 
-export default function SocialMediaLayout() {
+const SocialMediaLayout = () => {
+
+  const router = useRouter()
   // Mock data for stories, posts, and suggestions
   const stories = [
     { id: 1, username: 'user1', avatar: '/placeholder.svg?height=64&width=64' },
@@ -32,7 +36,7 @@ export default function SocialMediaLayout() {
   return (
     <div className="flex flex-col min-h-screen w-screen bg-gray-100 sm:flex-row ">
       {/* Header */}
-      <header className="z-50 flex h-16 w-full items-center justify-between bg-white px-4 sm:hidden">
+      <header className="text-black z-50 flex h-16 w-full items-center justify-between bg-white px-4 sm:hidden">
         <div className="flex items-center gap-1">
           <Camera />
           <h1 className="text-2xl font-bold">SocialApp</h1>
@@ -42,65 +46,12 @@ export default function SocialMediaLayout() {
         </div>
       </header>
 
-    
+      <Sidebar />
 
-      {/* Sidebar */}
-      <aside className="flex-1 fixed left-0 top-0 z-40 hidden h-screen flex-col border-r bg-white p-5 min-w-20 sm:flex xl:flex xl:w-64">
-        <div className="mb-10 text-2xl font-bold hidden xl:block">SocialApp</div>
-        <div className="mb-10 text-2xl font-bold xl:hidden flex justify-center items-center"><Camera /></div>
-        <nav className="flex flex-1 flex-col items-center text-2xl space-y-2 xl:items-start">
-          <Button variant="ghost" className="justify-start text-xl xl:text-base">
-            <Home size={64} />
-            <p className='hidden xl:block'>
-              Beranda
-            </p>
-          </Button>
-          <Button variant="ghost" className="justify-start text-2xl xl:text-base">
-            <Search />
-            <p className='hidden xl:block'>
-              Cari
-            </p>
-          </Button>
-          <Button variant="ghost" className="justify-start text-xl xl:text-base">
-            <PlusSquare />
-            <p className='hidden xl:block'>
-              Buat
-            </p>
-          </Button>
-          <Button variant="ghost" className="justify-start text-xl xl:text-base">
-            <Heart />
-            <p className='hidden xl:block'>
-              Notifikasi
-            </p>
-          </Button>
-          <Button variant="ghost" className="justify-start text-xl xl:text-base">
-            <MessageCircle />
-            <p className='hidden xl:block'>
-              Pesan
-            </p>
-          </Button>
-          <Button variant="ghost" className="justify-start text-xl xl:text-base">
-            <Bookmark />
-            <p className='hidden xl:block'>
-              Koleksi
-            </p>
-          </Button>
-          <Button variant="ghost" className="justify-start text-xl xl:text-base">
-            <User />
-            <p className='hidden xl:block'>
-              Profil
-            </p>
-          </Button>
-          {/* Button components omitted for brevity */}
-        </nav>
-        <Button variant="ghost" className="justify-start text-xl xl:text-base">
-          <Settings />
-          <p className='hidden xl:block'>Pengaturan</p>
-        </Button>
-      </aside>
-
+      <MobileNav />
+      
       {/* Main content */}
-      <main className="flex-grow mx-auto">
+      <main className="flex-grow mx-auto text-black">
         <div className="w-screen sm:max-w-md md:max-w-xl mx-auto p-4">
           {/* Stories */}
           <ScrollArea className="mb-2 w-full whitespace-nowrap rounded-lg ">
@@ -109,7 +60,9 @@ export default function SocialMediaLayout() {
                 <div key={story.id} className="flex flex-col items-center">
                   <Avatar className="h-16 w-16 ring-2 ring-primary ring-offset-2">
                     <AvatarImage src={story.avatar} alt={story.username} />
-                    <AvatarFallback>{story.username[0].toUpperCase()}</AvatarFallback>
+                    <AvatarFallback>
+                      {story.username[0].toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                   <span className="mt-1 text-xs">{story.username}</span>
                 </div>
@@ -124,7 +77,9 @@ export default function SocialMediaLayout() {
                 <CardHeader className="flex flex-row items-center space-x-4">
                   <Avatar>
                     <AvatarImage src={post.avatar} alt={post.username} />
-                    <AvatarFallback>{post.username[0].toUpperCase()}</AvatarFallback>
+                    <AvatarFallback>
+                      {post.username[0].toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                   <div className="font-semibold">{post.username}</div>
                 </CardHeader>
@@ -145,9 +100,12 @@ export default function SocialMediaLayout() {
                       <Bookmark className="h-5 w-5" />
                     </Button>
                   </div>
-                  <div className="font-semibold">{post.likes.toLocaleString()} suka</div>
+                  <div className="font-semibold">
+                    {post.likes.toLocaleString()} suka
+                  </div>
                   <div>
-                    <span className="font-semibold">{post.username}</span> {post.caption}
+                    <span className="font-semibold">{post.username}</span>{" "}
+                    {post.caption}
                   </div>
                 </CardFooter>
               </Card>
@@ -157,10 +115,13 @@ export default function SocialMediaLayout() {
       </main>
 
       {/* Right section */}
-      <aside className="hidden xl:flex flex-1 fixed right-0 top-0 h-screen w-80 flex-col border-l bg-white p-5">
+      <aside className="text-black hidden xl:flex flex-1 fixed right-0 top-0 h-screen w-80 flex-col border-l bg-white p-5">
         <div className="mb-6 flex items-center space-x-4">
           <Avatar>
-            <AvatarImage src="/placeholder.svg?height=64&width=64" alt="@johndoe" />
+            <AvatarImage
+              src="/placeholder.svg?height=64&width=64"
+              alt="@johndoe"
+            />
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
           <div>
@@ -169,17 +130,31 @@ export default function SocialMediaLayout() {
           </div>
         </div>
         <div className="mb-6">
-          <h3 className="mb-4 text-sm font-semibold text-gray-500">Saran untuk Anda</h3>
+          <h3 className="mb-4 text-sm font-semibold text-gray-500">
+            Saran untuk Anda
+          </h3>
           {suggestions.map((suggestion) => (
-            <div key={suggestion.id} className="mb-3 flex items-center justify-between">
+            <div
+              key={suggestion.id}
+              className="mb-3 flex items-center justify-between"
+            >
               <div className="flex items-center space-x-3">
                 <Avatar>
-                  <AvatarImage src={suggestion.avatar} alt={suggestion.username} />
-                  <AvatarFallback>{suggestion.username[0].toUpperCase()}</AvatarFallback>
+                  <AvatarImage
+                    src={suggestion.avatar}
+                    alt={suggestion.username}
+                  />
+                  <AvatarFallback>
+                    {suggestion.username[0].toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
                 <div>
-                  <div className="text-sm font-semibold">{suggestion.username}</div>
-                  <div className="text-xs text-gray-500">Disarankan untuk Anda</div>
+                  <div className="text-sm font-semibold">
+                    {suggestion.username}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    Disarankan untuk Anda
+                  </div>
                 </div>
               </div>
               <Button variant="link" size="sm">
@@ -189,7 +164,9 @@ export default function SocialMediaLayout() {
           ))}
         </div>
         <div>
-          <h3 className="mb-4 text-sm font-semibold text-gray-500">Tren Terkini</h3>
+          <h3 className="mb-4 text-sm font-semibold text-gray-500">
+            Tren Terkini
+          </h3>
           <div className="space-y-2">
             <div>#TrenTerkini1</div>
             <div>#TrenTerkini2</div>
@@ -197,25 +174,8 @@ export default function SocialMediaLayout() {
           </div>
         </div>
       </aside>
-
-      {/* Mobile bottom navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 flex justify-around border-t bg-white p-3 sm:hidden">
-        <Button variant="ghost" size="icon">
-          <Home className="h-6 w-6" />
-        </Button>
-        <Button variant="ghost" size="icon">
-          <Search className="h-6 w-6" />
-        </Button>
-        <Button variant="ghost" size="icon">
-          <PlusSquare className="h-6 w-6" />
-        </Button>
-        <Button variant="ghost" size="icon">
-          <Heart className="h-6 w-6" />
-        </Button>
-        <Button variant="ghost" size="icon">
-          <User className="h-6 w-6" />
-        </Button>
-      </nav>
     </div>
-  )
+  );
 }
+
+export default withAuth(SocialMediaLayout)
