@@ -20,6 +20,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {registerUser} from "@/lib/firebase/auth";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/router";
 
 const registerFormSchema = z.object({
   username: z.string().min(3, "Minimal 3 karakter"),
@@ -33,8 +34,10 @@ type FieldName = keyof RegisterFormSchema;
 
 export default function RegisterPage() {
   const { toast } = useToast();
+  const router = useRouter()
 
   const form = useForm<RegisterFormSchema>({
+    defaultValues: {username: "", email: "", password: ""},
     resolver: zodResolver(registerFormSchema),
   });
 
@@ -48,6 +51,18 @@ export default function RegisterPage() {
         title: "Register Failed",
         variant: "destructive",
       })
+    }
+    if (registerResponse.message) {
+      // Show success toast
+      form.reset();
+
+      toast({
+        description: registerResponse.message,
+        title: "Register Success",
+        variant: "default",
+      });
+      // Redirect to home
+      router.push("/");
     }
   });
 

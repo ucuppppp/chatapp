@@ -6,8 +6,6 @@ import {
 } from "firebase/auth";
 import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {auth, db} from "./init";
-import { getUserData } from "./firestore";
-import { set } from "react-hook-form";
 // Tipe untuk data pengguna
 interface UserData {
   email: string;
@@ -40,9 +38,12 @@ const registerUser = async (
 
     await setDoc(doc(db, "users", uid), userData);
 
+
+    document.cookie = `currentUser=${JSON.stringify({ id: uid,...userData})}`;
+    document.cookie = `token=${userData.token}`;
     return {message: "Pengguna berhasil didaftarkan", user: userCredential};
   } catch (error) {
-    console.error("Error saat pendaftaran: ", error);
+    console.log("Error saat pendaftaran: ", error);
     return {
       error: (error as Error).message || "Terjadi kesalahan saat pendaftaran",
     };
@@ -66,7 +67,7 @@ const loginUser = async (
     await updateDoc(docRef, {token : await userCredential.user.getIdToken()});
     const user = await getDoc(docRef);
 
-    document.cookie = `currentUser=${JSON.stringify(user.data())}`;
+    document.cookie = `currentUser=${JSON.stringify({id: userCredential.user.uid, ...user.data()})}`;
     document.cookie = `token=${user.data()?.token}`
     return {message: "Login berhasil", user: userCredential};
   } catch (error) {

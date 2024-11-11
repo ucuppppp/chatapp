@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import {Loader2} from "lucide-react";
 import getDataByField from "./getDataByField"; // Pastikan impor fungsi dengan benar
+import Sidebar from "@/components/ui/sidebar";
 
 // Fungsi untuk mendapatkan nilai cookie berdasarkan nama
 const getCookie = (name: string) => {
@@ -54,9 +55,12 @@ function withAuth<T extends object>(WrappedComponent: React.ComponentType<T>) {
 
     if (loading) {
       return (
-        <div className="h-screen w-screen flex items-center justify-center">
-          <Loader2 className="w-10 h-10 animate-spin" />
+        <>
+        <Sidebar />
+        <div className="h-screen w-screen bg-white flex items-center justify-center">
+          <Loader2 className="w-10 h-10 animate-spin text-black" />
         </div>
+        </>
       ); // Menampilkan loading state selama verifikasi
     }
 
@@ -66,4 +70,6 @@ function withAuth<T extends object>(WrappedComponent: React.ComponentType<T>) {
   return AuthComponent;
 }
 
+export {getCookie};
 export default withAuth;
+ 

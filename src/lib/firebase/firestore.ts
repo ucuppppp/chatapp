@@ -1,34 +1,26 @@
-import {doc, setDoc, getDoc} from "firebase/firestore";
-import {db} from "./init";
-
-// Fungsi untuk menyimpan data pengguna ke Firestore
-const saveUserToFirestore = async (uid: string, email: string) => {
+import {collection, query, where, getDocs} from "firebase/firestore";
+import {db} from "@/lib/firebase/init"; // Sesuaikan dengan konfigurasi Firebase Anda
+const getUserPosts = async (uid: string | undefined) => {
   try {
-    await setDoc(doc(db, "users", uid), {
-      email: email,
-      createdAt: new Date(),
-    });
-    console.log("Data pengguna berhasil disimpan ke Firestore.");
-  } catch (error) {
-    console.error("Gagal menyimpan data pengguna: ", error);
-  }
-};
+    const q = query(collection(db, "posts"), where("userId", "==", uid));
+    const querySnapshot = await getDocs(q);
 
-// Fungsi untuk membaca data pengguna
-const getUserData = async (uid: string) => {
-  try {
-    const docRef = doc(db, "users", uid);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      return JSON.stringify(docSnap.data());
+    // Mengecek apakah ada data yang sesuai
+    if (querySnapshot.empty) {
+      console.log("Tidak ada data yang ditemukan.");
+      return null; // Kembalikan null jika tidak ada data
     } else {
-      console.log("Dokumen tidak ditemukan.");
-      return null;
+      const data: any = [];
+      querySnapshot.forEach((doc) => {
+        data.push({id: doc.id, ...doc.data()}); // Menyimpan data dokumen dalam array
+      });
+      //   console.log(querySnapshot)
+      return data; // Mengembalikan array data yang ditemukan
     }
   } catch (error) {
-    console.error("Gagal membaca data pengguna: ", error);
+    console.log("Error mendapatkan data: ", error);
+    return null;
   }
 };
 
-export {saveUserToFirestore, getUserData};
+export default getUserPosts;

@@ -1,17 +1,34 @@
-import React, { use, useEffect } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { Bell, Bookmark, Camera, Heart, Home, LogOut, MessageCircle, PlusSquare, Search, Settings, TvIcon, User } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useRouter } from 'next/router'
-import withAuth from '@/lib/withAuth'
+import withAuth, { getCookie } from '@/lib/withAuth'
 import Sidebar from '@/components/ui/sidebar'
 import MobileNav from '@/components/ui/mobileNav'
 
+interface UserData {
+  id: string;
+  email: string;
+  username: string;
+  createdAt: Date;
+  token: string;
+  profilePicture?: string;
+}
+
 const SocialMediaLayout = () => {
 
-  const router = useRouter()
+  const [user, setUser] = useState<UserData>();
+
+  useEffect(() => {
+    const userData = getCookie("currentUser");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
   // Mock data for stories, posts, and suggestions
   const stories = [
     { id: 1, username: 'user1', avatar: '/placeholder.svg?height=64&width=64' },
@@ -119,14 +136,14 @@ const SocialMediaLayout = () => {
         <div className="mb-6 flex items-center space-x-4">
           <Avatar>
             <AvatarImage
-              src="/placeholder.svg?height=64&width=64"
-              alt="@johndoe"
+              src={user?.profilePicture}
+              alt={user?.username}
             />
             <AvatarFallback>JD</AvatarFallback>
           </Avatar>
           <div>
-            <div className="font-semibold">johndoe</div>
-            <div className="text-sm text-gray-500">John Doe</div>
+            <div className="font-semibold">{user?.username}</div>
+            <div className="text-sm text-gray-500">{user?.email}</div>
           </div>
         </div>
         <div className="mb-6">

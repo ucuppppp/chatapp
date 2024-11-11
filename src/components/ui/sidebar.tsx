@@ -1,9 +1,29 @@
 import { Bookmark, Camera, Heart, Home, MessageCircle, PlusSquare, Search, Settings, User } from "lucide-react";
 import { Button } from "./button";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { getCookie } from "@/lib/withAuth";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
+type UserData = {
+  username: string;
+  email: string;
+  createdAt: Date;
+  token: string;
+  profilePicture?: string;
+}
 
 export default function Sidebar() {
+  const [user, setUser] = useState<UserData>();
+  const router = useRouter();
+
+  useEffect(() => {
+    const userData = getCookie("currentUser");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, [])
+
   return (
     <>
       {/* Sidebar */}
@@ -18,6 +38,7 @@ export default function Sidebar() {
           <Button
             variant="ghost"
             className="w-full lex gap-3 justify-start !text-lg"
+            onClick={() => router.push("/")}
           >
             <Home className="!w-7 !h-7" />
             <p className="hidden xl:block">Beranda</p>
@@ -60,13 +81,14 @@ export default function Sidebar() {
           <Button
             variant="ghost"
             className="w-full flex gap-3 justify-start !text-lg"
+            onClick={() => router.push("/profile")}
           >
             <Avatar className="w-8 h-8 xl:w-7 xl:h-7">
               <AvatarImage
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb-NGEQDekk2BwsllLjk4tcIM_BPIzXECdsg&s"
-                alt="@johndoe"
+                src={user?.profilePicture}
+                alt={`@${user?.username}`}
               />
-              <AvatarFallback>JD</AvatarFallback>
+              <AvatarFallback>{user?.username[0].toLocaleUpperCase()}</AvatarFallback>
             </Avatar>
             <p className="hidden xl:block">Profil</p>
           </Button>
