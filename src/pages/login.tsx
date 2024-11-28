@@ -21,6 +21,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {loginUser} from "@/lib/firebase/auth";
 import {useToast} from "@/hooks/use-toast";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const loginFormSchema = z.object({
   email: z.string().email(),
@@ -89,7 +90,7 @@ export default function LoginPage() {
   );
 
   return (
-    <main className="px-4 container py-8 flex flex-col justify-center items-center max-w-screen min-h-screen">
+    <main className="px-4 container py-8 flex flex-col justify-center items-center max-w-screen min-h-screen mx-auto">
       <Form {...form}>
         <form
           onSubmit={onSubmit}
@@ -105,10 +106,15 @@ export default function LoginPage() {
                 {RenderField("password", "Password", "*********", "password")}
               </div>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex flex-col">
               <div className="flex flex-col space-y-4 w-full">
                 <Button type="submit">Login</Button>
               </div>
+              <p className="flex items-center justify-center mt-4 gap-2">Don't have an account?
+              <Link href="/register" className="text-center block hover:underline">
+                Register
+              </Link>
+              </p>
             </CardFooter>
           </Card>
         </form>

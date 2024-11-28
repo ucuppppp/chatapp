@@ -24,6 +24,8 @@ export default function Sidebar() {
     }
   }, [])
 
+  console.log(user?.username)
+
   return (
     <>
       {/* Sidebar */}
@@ -81,7 +83,7 @@ export default function Sidebar() {
           <Button
             variant="ghost"
             className="w-full flex gap-3 justify-start !text-lg"
-            onClick={() => router.push("/profile")}
+            onClick={() => router.push(`/${user?.username}`)}
           >
             <Avatar className="w-8 h-8 xl:w-7 xl:h-7">
               <AvatarImage

@@ -10,24 +10,56 @@ import {
 } from "firebase/firestore";
 import {db} from "@/lib/firebase/init"; // Sesuaikan dengan konfigurasi Firebase Anda
 
-const getUserPosts = async (uid: string | undefined) => {
-  try {
-    const q = query(collection(db, "posts"), where("userId", "==", uid));
-    const querySnapshot = await getDocs(q);
+const getUserPosts = async (username: string | undefined) => {
+  if (!username) {
+    return null;
+  }
 
-    // Mengecek apakah ada data yang sesuai
-    if (querySnapshot.empty) {
-      console.log("Tidak ada data yang ditemukan.");
-      return null; // Kembalikan null jika tidak ada data
-    } else {
-      const data: any[] = [];
-      querySnapshot.forEach((doc) => {
-        data.push({id: doc.id, ...doc.data()}); // Menyimpan data dokumen dalam array
-      });
-      return data; // Mengembalikan array data yang ditemukan
+  try {
+    // Query untuk mendapatkan pengguna berdasarkan username
+    const userQuery = query(
+      collection(db, "users"),
+      where("username", "==", username)
+    );
+    const userSnapshot = await getDocs(userQuery);
+
+    // Cek apakah ada pengguna dengan username tersebut
+    if (userSnapshot.empty) {
+      console.log("Pengguna dengan username tersebut tidak ditemukan.");
+      return null;
     }
+
+    // Ambil dokumen pertama (asumsi username unik)
+    const userDoc = userSnapshot.docs[0];
+    const userData = userDoc.data();
+    const userId = userDoc.id; // ID dokumen pengguna
+    const userName = userData.name; // Nama pengguna
+
+    // Query untuk mendapatkan postingan berdasarkan userId
+    const postsQuery = query(
+      collection(db, "posts"),
+      where("userId", "==", userId)
+    );
+    const postsSnapshot = await getDocs(postsQuery);
+
+    if (postsSnapshot.empty) {
+      console.log("Tidak ada postingan untuk pengguna ini.");
+      return null;
+    }
+
+    // Format data postingan
+    const postsData: any[] = [];
+    postsSnapshot.forEach((doc) => {
+      postsData.push({
+        id: doc.id,
+        owner: userName,
+        ...doc.data(),
+      });
+    });
+
+    return postsData;
   } catch (error) {
-    console.log("Error mendapatkan data: ", error);
+    console.error("Error mendapatkan data:", error);
     return null;
   }
 };
