@@ -26,7 +26,7 @@ const getUserPosts = async (username: string | undefined) => {
     // Cek apakah ada pengguna dengan username tersebut
     if (userSnapshot.empty) {
       console.log("Pengguna dengan username tersebut tidak ditemukan.");
-      return null;
+      return {status : 404, "message": "Pengguna tidak ditemukan."};
     }
 
     // Ambil dokumen pertama (asumsi username unik)
@@ -44,7 +44,7 @@ const getUserPosts = async (username: string | undefined) => {
 
     if (postsSnapshot.empty) {
       console.log("Tidak ada postingan untuk pengguna ini.");
-      return null;
+      return {"message": "Tidak ada postingan untuk pengguna ini."};
     }
 
     // Format data postingan

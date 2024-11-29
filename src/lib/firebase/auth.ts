@@ -51,10 +51,16 @@ const registerUser = async (
 };
 
 // Fungsi untuk login pengguna
+type LoginResponse = {
+  message?: string;
+  user?: UserCredential;
+  error?: string;
+};
+
 const loginUser = async (
   email: string,
   password: string
-): Promise<{message?: string; user?: UserCredential; error?: string}> => {
+): Promise<LoginResponse> => {
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -63,16 +69,57 @@ const loginUser = async (
     );
 
     const docRef = doc(db, "users", userCredential.user.uid);
+    const token = await userCredential.user.getIdToken();
+    await updateDoc(docRef, {token});
 
-    await updateDoc(docRef, {token : await userCredential.user.getIdToken()});
-    const user = await getDoc(docRef);
+    const userSnapshot = await getDoc(docRef);
+    if (!userSnapshot.exists()) {
+      throw new Error("Data pengguna tidak ditemukan di Firestore.");
+    }
 
-    document.cookie = `currentUser=${JSON.stringify({id: userCredential.user.uid, ...user.data()})}`;
-    document.cookie = `token=${user.data()?.token}`
-    return {message: "Login berhasil", user: userCredential};
+    const userData = userSnapshot.data();
+    document.cookie = `currentUser=${JSON.stringify({
+      id: userCredential.user.uid,
+      ...userData,
+    })}; path=/;`;
+    document.cookie = `token=${userData?.token}; path=/; Secure; SameSite=Strict`;
+
+    return {
+      message: "Login berhasil",
+      user: userCredential,
+    };
   } catch (error) {
-    return {error: (error as Error).message || "Terjadi kesalahan saat login"};
+    // Penanganan error berdasarkan kode error Firebase
+    let errorMessage = "Terjadi kesalahan saat login";
+    if (error instanceof Error && "code" in error) {
+      const firebaseError = error as {code: string; message: string};
+      switch (firebaseError.code) {
+        case "auth/invalid-credential":
+          errorMessage = "Email atau password tidak valid.";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "Format email tidak valid.";
+          break;
+        case "auth/user-not-found":
+          errorMessage = "Pengguna dengan email ini tidak ditemukan.";
+          break;
+        case "auth/wrong-password":
+          errorMessage = "Password yang Anda masukkan salah.";
+          break;
+        case "auth/too-many-requests":
+          errorMessage =
+            "Terlalu banyak percobaan login. Silakan coba lagi nanti.";
+          break;
+        default:
+          errorMessage = firebaseError.message || "Kesalahan tidak dikenal.";
+          break;
+      }
+    }
+    return {
+      error: errorMessage,
+    };
   }
 };
+
 
 export {registerUser, loginUser};
