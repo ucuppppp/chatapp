@@ -159,5 +159,23 @@ const getRecentPosts = async () => {
   }
 };
 
-export {getRecentPosts}
+
+const getPost = async (id: string) => {
+  try {
+    const docRef = doc(db, "posts", id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return {id: docSnap.id, ...docSnap.data()};
+    } else {
+      console.log("No such document!");
+      return null;
+    }
+  } catch (error) {
+    console.log("Error retrieving data: ", error);
+    return null;
+  }
+};
+
+
+export {getRecentPosts, getPost};
 export default getUserPosts

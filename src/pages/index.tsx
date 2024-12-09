@@ -1,16 +1,16 @@
 import React, { use, useEffect, useState } from 'react'
-import { Bell, Bookmark, Camera, Heart, Home, LogOut, MessageCircle, PlusSquare, Search, Settings, TvIcon, User } from 'lucide-react'
+import {Bookmark, Camera, Heart, MessageCircle } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { useRouter } from 'next/router'
 import withAuth, { getCookie } from '@/lib/withAuth'
 import Sidebar from '@/components/ui/sidebar'
 import MobileNav from '@/components/ui/mobileNav'
 import { getRecentPosts } from '@/lib/firebase/firestore'
-import { set } from 'react-hook-form'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
+import { useRouter } from 'next/router'
+import { usePostStore } from '@/lib/store/usePostStore'
 
 interface UserData {
   id: string;
@@ -39,7 +39,10 @@ interface PostsData
 const SocialMediaLayout = () => {
  
   const [user, setUser] = useState<UserData>();
-  const [posts, setPosts] = useState<PostsData[]>([]);
+  const router = useRouter();
+
+
+  const setPosts = usePostStore((state) => state.setPosts);
 
    useEffect(() => {
      const fetchData = async () => {
@@ -49,13 +52,14 @@ const SocialMediaLayout = () => {
        }
        const postsData = await getRecentPosts();
        if (postsData) {
-        //  console.log(postsData);
          setPosts(postsData);
        }
      };
 
      fetchData();
    }, []);
+
+   const posts = usePostStore((state) => state.posts);
 
   // Mock data for stories, posts, and suggestions
   const stories = [
@@ -145,7 +149,7 @@ const SocialMediaLayout = () => {
                       <Button variant="ghost" size="icon">
                         <Heart className="!h-7 !w-7" />
                       </Button>
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon" onClick={() => { router.push(`p/${post.id}`)}}>
                         <MessageCircle className="!h-7 !w-7" />
                       </Button>
                     </div>
