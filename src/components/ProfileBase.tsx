@@ -3,7 +3,7 @@ import {Button} from "@/components/ui/button";
 import {Settings} from "lucide-react";
 import Sidebar from "@/components/ui/sidebar";
 import {getCookie} from "@/lib/withAuth"; // Pastikan getCookie digunakan dengan benar
-import Custom404 from "@/pages/404";
+import Custom404 from "@/app/not-found";
 
 interface UserData {
   id: string;

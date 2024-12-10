@@ -163,7 +163,7 @@ const SocialMediaLayout = () => {
                     {post.caption}
                   </div>
                   <div className="text-sm text-muted-foreground md:hidden">
-                    {post.createdAt}
+                    {post?.createdAt}
                   </div>
                 </CardFooter>
               </Card>

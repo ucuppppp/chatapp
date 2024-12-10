@@ -1,9 +1,10 @@
+"use client";
 import { Bookmark, Camera, Heart, Home, MessageCircle, PlusSquare, Search, Settings, User } from "lucide-react";
 import { Button } from "./button";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { getCookie } from "@/lib/withAuth";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 type UserData = {
   username: string;
