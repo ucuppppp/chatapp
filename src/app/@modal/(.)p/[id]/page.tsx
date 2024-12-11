@@ -1,29 +1,24 @@
-import {useRouter} from "next/router";
 import Modal from "@/components/ui/modal";
-import getDataByField from "@/lib/getDataByField";
-import {useEffect, useState} from "react";
-import {getPost} from "@/lib/firebase/firestore";
 import {usePostStore} from "@/lib/store/usePostStore";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {DotsVerticalIcon} from "@radix-ui/react-icons";
 
-export default function Post() {
-  const router = useRouter();
-  const {id} = router.query;
+export default async function Post({params}: {params : Promise<{id: string}>}) {
+  const id = (await params).id;
   const getPostById = usePostStore((state) => state.getPostById);
-  const [post, setPost] = useState<any>(null);
+  const post = getPostById(id);
 
-  useEffect(() => {
-    if (id && typeof id === "string") {
-      // Fetch data menggunakan id dari URL
-      const post = getPostById(id);
-      setPost(post || null);
-    }
-  }, [id, getPostById]);
+  if (!post) {
+    return (
+      <Modal>
+        <div className="flex justify-center items-center h-[80vh]">
+          <p className="text-black">Loading...</p>
+        </div>
+      </Modal>
+    );
+  }
 
-  if (!post) return <div>Loading...</div>;
-
-  console.log(post);
+  console.log("intercepted");
 
   return (
     <Modal>
