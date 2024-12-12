@@ -1,10 +1,12 @@
+"use client";
 import Modal from "@/components/ui/modal";
 import {usePostStore} from "@/lib/store/usePostStore";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {DotsVerticalIcon} from "@radix-ui/react-icons";
+import React from "react";
 
-export default async function Post({params}: {params : Promise<{id: string}>}) {
-  const id = (await params).id;
+export default function ModalPost({params}: {params : Promise<{id: string}>}) {
+  const id = React.use(params).id;
   const getPostById = usePostStore((state) => state.getPostById);
   const post = getPostById(id);
 
@@ -55,6 +57,7 @@ export default async function Post({params}: {params : Promise<{id: string}>}) {
                 </Avatar>
                 <div className="font-semibold text-black">{post.owner}</div>
                 <p className="text-sm text-black">{post?.caption}</p>
+                
               </>
             )}
           </div>

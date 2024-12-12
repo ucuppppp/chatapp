@@ -14,8 +14,7 @@ export default function Post({params}: {params: Promise<{ id: string }>}) {
   const getPostById = usePostStore((state) => state.getPostById);
   const [post, setPost] = useState<any>(null);
 
-  console.log(id);
-
+  
   useEffect(() => {
     if (id && typeof id === "string") {
       // Fetch data menggunakan id dari URL
@@ -23,10 +22,10 @@ export default function Post({params}: {params: Promise<{ id: string }>}) {
       setPost(post || null)
     }
   }, [id, getPostById]);
-
+  
+  console.log(post);
   if (!post) return <div>Loading...</div>;
 
-  // console.log(post);
 
   return (
     <>
