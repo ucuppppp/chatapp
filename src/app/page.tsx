@@ -12,6 +12,7 @@ import {getRecentPosts} from "@/lib/firebase/firestore";
 import {DotsVerticalIcon} from "@radix-ui/react-icons";
 import {useRouter} from "next/navigation";
 import {usePostStore} from "@/lib/store/usePostStore";
+import { useLikeStore } from "@/lib/store/likeStore";
 
 interface UserData {
   id: string;
@@ -38,6 +39,13 @@ const SocialMediaLayout = () => {
   const router = useRouter();
 
   const setPosts = usePostStore((state) => state.setPosts);
+  const {isLiking, toggleLike, getLikesStatus} = useLikeStore();
+
+
+  const handleLike =  (postId: string, userId: string) => {
+    toggleLike(postId, userId);
+}
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,10 +60,16 @@ const SocialMediaLayout = () => {
     };
 
     fetchData();
+    
   }, []);
 
   const posts = usePostStore((state) => state.posts);
   // Mock data for stories, posts, and suggestions
+
+  const isPostLiked = (postId: string) => {
+    return getLikesStatus(postId);
+  }
+
   const stories = [
     {id: 1, username: "user1", avatar: "/placeholder.svg?height=64&width=64"},
     {id: 2, username: "user2", avatar: "/placeholder.svg?height=64&width=64"},
@@ -152,8 +166,15 @@ const SocialMediaLayout = () => {
                 <CardFooter className="flex flex-col items-start space-y-2 p-2">
                   <div className="flex w-full items-center justify-between">
                     <div className="flex space-x-4">
-                      <Button variant="ghost" size="icon">
-                        <Heart className="!h-7 !w-7" />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleLike(post.id, user?.id ?? "")}
+                      >
+                        <Heart
+                          className="!h-7 !w-7"
+                          fill={isPostLiked(post.id) ? "red" : "white"}
+                        />
                       </Button>
                       <Button
                         variant="ghost"

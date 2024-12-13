@@ -25,7 +25,6 @@ const getDataByField = async (
       querySnapshot.forEach((doc) => {
         data.push({id: doc.id, ...doc.data()}); // Menyimpan data dokumen dalam array
       });
-    //   console.log(querySnapshot)
       return data; // Mengembalikan array data yang ditemukan
     }
   } catch (error) {
