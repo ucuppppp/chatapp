@@ -11,17 +11,25 @@ import Sidebar from "@/components/ui/sidebar";
 
 export default function Post({params}: {params: Promise<{ id: string }>}) {
   const id = React.use(params).id;
-  const getPostById = usePostStore((state) => state.getPostById);
   const [post, setPost] = useState<any>(null);
 
   
   useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const post = await getPost(id);
+        setPost(post);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
     if (id && typeof id === "string") {
       // Fetch data menggunakan id dari URL
-      const post = getPostById(id);
+      const post = fetchPost();
       setPost(post || null)
     }
-  }, [id, getPostById]);
+  }, [id]);
   
   console.log(post);
   if (!post) return <div>Loading...</div>;
@@ -30,8 +38,8 @@ export default function Post({params}: {params: Promise<{ id: string }>}) {
   return (
     <>
       <Sidebar/>
-      <main className="flex align-center justify-center bg-white">
-        <div className="flex w-[70vw] ml-72 border rounded-xl">
+      <main className="flex align-center justify-center h-screen bg-white">
+        <div className="flex w-[70vw] h-[80vh] my-auto ml-72 border rounded-xl">
           <div className="w-1/2 h-[80vh]">
             <img
               src={post.content}
@@ -44,7 +52,7 @@ export default function Post({params}: {params: Promise<{ id: string }>}) {
               <div className="flex items-center space-x-2">
                 <Avatar>
                   <AvatarImage src={post.avatar} alt={post.owner} />
-                  <AvatarFallback>{post.owner[0].toUpperCase()}</AvatarFallback>
+                  {/* <AvatarFallback>{post.owner[0].toUpperCase()}</AvatarFallback> */}
                 </Avatar>
                 <div className="font-semibold text-black">{post.owner}</div>
                 <div className="text-sm text-muted-foreground">
@@ -61,7 +69,7 @@ export default function Post({params}: {params: Promise<{ id: string }>}) {
                   <Avatar>
                     <AvatarImage src={post.avatar} alt={post.owner} />
                     <AvatarFallback>
-                      {post.owner[0].toUpperCase()}
+                      {/* {post.owner[0].toUpperCase()} */}
                     </AvatarFallback>
                   </Avatar>
                   <div className="font-semibold text-black">{post.owner}</div>

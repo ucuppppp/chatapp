@@ -167,8 +167,16 @@ const getPost = async (id: string) => {
   try {
     const docRef = doc(db, "posts", id);
     const docSnap = await getDoc(docRef);
+    const owner = doc(db, "users", docSnap.data()?.userId);
+    const ownerSnap = await getDoc(owner);
+    // console.log(docSnap.data())
     if (docSnap.exists()) {
-      return {id: docSnap.id, ...docSnap.data()};
+      const post = docSnap.data();
+      post.createdAt = formatTimeAgo(post.createdAt);
+      return {id: docSnap.id,
+              owner: ownerSnap.data()?.username,
+              avatar: ownerSnap.data()?.profilePicture,
+              ...post};
     } else {
       console.log("No such document!");
       return null;
